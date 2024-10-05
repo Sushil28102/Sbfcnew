@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive CPA Registration Form</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/valuation.css">
+   <!-- Script code -->
+   <script>
+    function fetchData() {
+        var refid = document.getElementById('refid1').value.trim();  // Ensure we trim whitespace
+        if (refid) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'fetch_data.php?refid=' + refid, true);
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    var data = JSON.parse(this.responseText);
+                    if (data) {
+                        document.getElementById('cpa_name_valuation').value = data.cpa_name_valuation || '';
+                        document.getElementById('cpa_name_valuation').disabled = true; 
+                        document.getElementById('technical_valuation').value = data.technical_valuation || '';
+                        document.getElementById('technical_valuation').readOnly = true;
+                        document.getElementById('date_of_allocation').value = data.date_of_allocation || '';
+                        document.getElementById('date_of_allocation').readOnly = true;
+                        document.getElementById('date_of_initiation').value = data.date_of_initiation || '';
+                        document.getElementById('date_of_initiation').readOnly = true;
+                        document.getElementById('disposition_valuation').value = data.disposition_valuation || '';
+                        document.getElementById('disposition_valuation').disabled = true;
+                        document.getElementById('vendor_name').value = data.vendor_name || '';
+                        document.getElementById('vendor_name').disabled = true;
+                        document.getElementById('second_vendor_name').value = data.second_vendor_name || '';
+                        document.getElementById('report_received_date_1').value = data.report_received_date_1 || '';
+                        document.getElementById('report_received_date_2').value = data.report_received_date_2 || '';
+                        document.getElementById('valuation_query').value = data.valuation_query || '';
+                        document.getElementById('case_revert_date').value = data.case_revert_date || '';
+                        document.getElementById('vendor_query').value = data.vendor_query || '';
+                    } else {
+                        alert('No data found for the given RefID');
+                    }
+                } else {
+                    alert('Error fetching data: ' + this.status);
+                }
+            };
+            xhr.send();
+        } else {
+            alert('Please enter a RefID');
+        }
+    }
+
+    function clearFields() {
+        document.getElementById('refid').value = '';
+        document.getElementById('cpa_name_valuation').value = '';
+        document.getElementById('technical_valuation').value = '';
+        document.getElementById('date_of_allocation').value = '';
+        document.getElementById('date_of_initiation').value = '';
+        document.getElementById('disposition_valuation').value = '';
+        document.getElementById('vendor_name').value = '';
+        document.getElementById('second_vendor_name').value = '';
+        document.getElementById('report_received_date_1').value = '';
+        document.getElementById('report_received_date_2').value = '';
+        document.getElementById('valuation_query').value = '';
+        document.getElementById('case_revert_date').value = '';
+        document.getElementById('vendor_query').value = '';
+
+        // Resetting disabled and readOnly attributes
+        document.getElementById('cpa_name_valuation').disabled = false; 
+        document.getElementById('technical_valuation').readOnly = false;
+        document.getElementById('date_of_allocation').readOnly = false;
+        document.getElementById('date_of_initiation').readOnly = false;
+        document.getElementById('disposition_valuation').disabled = false;
+        document.getElementById('vendor_name').disabled = false;
+    }
+</script>
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+ <!--=============== HEADER ===============-->
+ <header class="header">
+     
+    <nav class="nav container">
+      <a href="index.html" class="nav__logo">
+        <img
+          class="nav__logo-img"
+          src="https://www.sbfc.com/images/logo-sbfc.svg?rm=1702233000"
+          alt="website logo"
+        />
+      </a>
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a href="home.php" class="nav__link">Home</a>
+          </li>
+          <li class="nav__item">
+            <a href="basic_cpa_detail.html" class="nav__link">Basic</a>
+          </li>
+          <li class="nav__item">
+            <a href="screening.html" class="nav__link">Screening</a>
+          </li>
+          <li class="nav__item">
+            <a href="valuation.html" class="nav__link active-link">Valuation</a>
+          </li>
+          <li class="nav__item">
+            <a href="legal.html" class="nav__link">Legal</a>
+          </li>
+          <li class="nav__item">
+            <a href="assessment.html" class="nav__link">Assessment</a>
+          </li>
+      
+          <!-- <li class="nav__item">
+            <a href="login-register.html" class="nav__link active-link"
+              >Login</a
+            >
+          </li> -->
+        </ul>
+        <div class="header__search">
+          <input
+            type="text"
+            placeholder="Enter RefId..."
+            class="form__input"
+            id="refid1"
+          />
+          <button class="search__btn" onclick="fetchData()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+</svg>
+          </button>
+        </div>
+      </div>
+     
+    </nav>
+  </header>
+
+  <div class="eleven">
+    <h1 class="h_1">Valuation form</h1>
+  </div>
+
+
+<form class="form-legal" method="post" action="save_valuation.php" id="valuation">
+    <div class="form-row">
+        <div class="form-group">
+            <label for="cpa_name_valuation">CPA Name*</label>
+            <select id="cpa_name_valuation" name="cpa_name_valuation" required class="Fieldlist">
+              <option value="">Select CPA Name</option>
+              <option value="Pratik Bhuvad">Pratik Bhuvad</option>
+              <option value="Shailesh Agre">Shailesh Agre</option>
+              <option value="Jitesh Dalavi">Jitesh Dalavi</option>
+              <option value="Shreyash Hule">Shreyash Hule</option>
+              <option value="Srushti Shirke">Srushti Shirke</option>
+              <option value="Shweti Rajawat">Shweti Rajawat</option>
+              <option value="Suraj Sutar">Suraj Sutar</option>
+              <option value="Shraddha Kadam">Shraddha Kadam</option>
+              <option value="Sagar Katale">Sagar Katale</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="technical_valuation">Technical Valuation*</label>
+            <input type="text" id="technical_valuation" name="technical_valuation" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="date_of_allocation">Date of Allocation*</label>
+            <input type="date" id="date_of_allocation" name="date_of_allocation" required>
+        </div>
+        <div class="form-group">
+            <label for="date_of_initiation">Date of Initiation*</label>
+            <input type="date" id="date_of_initiation" name="date_of_initiation" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="vendor_name">Vendor Name*</label>
+            <select id="vendor_name" name="vendor_name" required class="Fieldlist">
+              <option value="">Select Vendor Name</option>
+              <option value="VMR Valuators">VMR Valuators</option>
+              <option value="JN Constructions">JN Constructions</option>
+              <option value="Sailaja">Sailaja</option>
+              <option value="Naga Prasanth">Naga Prasanth</option>
+              <option value="Mourya Concepts">Mourya Concepts</option>
+              <option value="Adroit Technical Services Pvt. Ltd.">Adroit Technical Services Pvt. Ltd.</option>
+              <option value="A R Bhathakande Association">A R Bhathakande Association</option>
+              <option value="GCA Cost Consultants">GCA Cost Consultants</option>
+              <option value="Black Olive Ventures Pvt. Ltd.">Black Olive Ventures Pvt. Ltd.</option>
+              <option value="Divine Associates">Divine Associates</option>
+              <option value="Shakthivel Groups">Shakthivel Groups</option>
+              <option value="NSM Associates">NSM Associates</option>
+              <option value="SJR Associates Pvt. Ltd.">SJR Associates Pvt. Ltd.</option>
+              <option value="PropEdge Valuations Pvt. Ltd.">PropEdge Valuations Pvt. Ltd.</option>
+              <option value="Sreenidhi Consultancy">Sreenidhi Consultancy</option>
+              <option value="Vighneshwara Engineer's">Vighneshwara Engineer's</option>
+              <option value="SMR Engineers">SMR Engineers</option>
+              <option value="Pavan Sai Associates">Pavan Sai Associates</option>
+              <option value="Sriram Associates">Sriram Associates</option>
+              <option value="D V Yogisha Rao">D V Yogisha Rao</option>
+              <option value="Arjun HR Valuers">Arjun HR Valuers</option>
+              <option value="G K Construction">G K Construction</option>
+              <option value="Stiffeners Property Valuers & Consultants _ Pondycherry">Stiffeners Property Valuers & Consultants _ Pondycherry</option>
+              <option value="Ramani Associates">Ramani Associates</option>
+              <option value="M Shabarinath Associates">M Shabarinath Associates</option>
+              <option value="Srinivasa Associates">Srinivasa Associates</option>
+              <option value="Kothawar Santosh">Kothawar Santosh</option>
+              <option value="Ramanujan (Apex)">Ramanujan (Apex)</option>
+              <option value="Harish Mudragada">Harish Mudragada</option>
+              <option value="BVS Prakash">BVS Prakash</option>
+              <option value="Janasaran Associates">Janasaran Associates</option>
+              <option value="Sandeep (Shree Krishna)">Sandeep (Shree Krishna)</option>
+              <option value="Mohan Charma">Mohan Charma</option>
+              <option value="Amar Associates">Amar Associates</option>
+              <option value="BM Construction/ Muneer">BM Construction/ Muneer</option>
+              <option value="Kaligi Shivaraj">Kaligi Shivaraj</option>
+              <option value="Mallikarujunarao">Mallikarujunarao</option>
+              <option value="G K Associates">G K Associates</option>
+              <option value="K Krishna">K Krishna</option>
+              <option value="Anil Kumar Associates">Anil Kumar Associates</option>
+              <option value="P Rama Mohana Rao">P Rama Mohana Rao</option>
+              <option value="Vijay Group">Vijay Group</option>
+              <option value="Creative Valuers & Engineers">Creative Valuers & Engineers</option>
+              <option value="Protocol Valuers Pvt. Ltd.">Protocol Valuers Pvt. Ltd.</option>
+              <option value="Bhirud & Associates">Bhirud & Associates</option>
+              <option value="JBA Consulting & Advisory Services LLP">JBA Consulting & Advisory Services LLP</option>
+              <option value="Infinity Engineering Solution">Infinity Engineering Solution</option>
+              <option value="Formulaic Engineers Pvt. Ltd.">Formulaic Engineers Pvt. Ltd.</option>
+              <option value="Magpie Engineering Pvt. Ltd.">Magpie Engineering Pvt. Ltd.</option>
+              <option value="Real Apple Consultancy">Real Apple Consultancy</option>
+              <option value="Yuvaan Consultants">Yuvaan Consultants</option>
+              <option value="Braj Kishor Dwivedi">Braj Kishor Dwivedi</option>
+              <option value="Aadya Associates">Aadya Associates</option>
+              <option value="Propmatrix Consultants">Propmatrix Consultants</option>
+              <option value="Techvalue Services (ICICI)">Techvalue Services (ICICI)</option>
+              <option value="Swapnil Nahar (ICICI)">Swapnil Nahar (ICICI)</option>
+              <option value="Mahim Corporation">Mahim Corporation</option>
+              <option value="Astute Valuers">Astute Valuers</option>
+              <option value="Rajesh Shaha">Rajesh Shaha</option>
+              <option value="Unity Constructions (ICICI)">Unity Constructions (ICICI)</option>
+              <option value="Vaastumulya Engineer">Vaastumulya Engineer</option>
+              <option value="Bitopan Sarmah">Bitopan Sarmah</option>
+              <option value="Sarif Ahmed">Sarif Ahmed</option>
+              <option value="RDSP Valuation">RDSP Valuation</option>
+              <option value="Mahesh Deshpande">Mahesh Deshpande</option>
+              <option value="Irshad Quazi">Irshad Quazi</option>
+              <option value="Vedant Associates (ICICI)">Vedant Associates (ICICI)</option>
+              <option value="Sunil Patil (ICICI)">Sunil Patil (ICICI)</option>
+              <option value="Strucon Consultancy Services">Strucon Consultancy Services</option>
+              <option value="Dhyey Associates">Dhyey Associates</option>
+              <option value="Nitin Shah">Nitin Shah</option>
+              <option value="Keyur Patel">Keyur Patel</option>
+              <option value="Evaluation Expertz">Evaluation Expertz</option>
+              <option value="Datar Technical">Datar Technical</option>
+              <option value="Aggarwal & Associates">Aggarwal & Associates</option>
+              <option value="USP / Renu">USP / Renu</option>
+              <option value="Alok Pundir">Alok Pundir</option>
+              <option value="Rakesh Jain">Rakesh Jain</option>
+              <option value="Kanassure">Kanassure</option>
+              <option value="Nirman Consultants">Nirman Consultants</option>
+              <option value="Designograph">Designograph</option>
+              <option value="R Bajaj & Associates">R Bajaj & Associates</option>
+              <option value="Anand and Anand">Anand and Anand</option>
+              <option value="Dimensions">Dimensions</option>
+              <option value="Sunrise Engineers & Landscapers">Sunrise Engineers & Landscapers</option>
+              <option value="Bhupinder Pal Singh & Associates">Bhupinder Pal Singh & Associates</option>
+              <option value="Er. Prashant Sharma- New">Er. Prashant Sharma- New</option>
+              <option value="Ruindrson Valuers- New">Ruindrson Valuers- New</option>
+              <option value="Sandeep Mandawaria-New">Sandeep Mandawaria-New</option>
+              <option value="Design Plus/ Antriksh">Design Plus/ Antriksh</option>
+              <option value="GK Construction">GK Construction</option>
+              <option value="GK associates">GK associates</option>
+              <option value="Yenni Rajesh">Yenni Rajesh</option>
+              <option value="PVR Associates">PVR Associates</option>
+              <option value="P Venkata Ramana">P Venkata Ramana</option>
+              <option value="VH Fayaz Ahmed">VH Fayaz Ahmed</option>
+              <option value="Sri Kumaran Constructions">Sri Kumaran Constructions</option>
+              <option value="Merit Associates">Merit Associates</option>
+              <option value="Rama Consultant - Ujjain">Rama Consultant - Ujjain</option>
+              <option value="Valfin Advisory India Pvt. Ltd.">Valfin Advisory India Pvt. Ltd.</option>
+              <option value="Vattyam Nagarja Sivaraman">Vattyam Nagarja Sivaraman</option>
+              <option value="Aadya Associates">Aadya Associates</option>
+              <option value="Pranab Jyoti Dutta">Pranab Jyoti Dutta</option>
+              <option value="Esteem">Esteem</option>
+              <option value="Naveen">Naveen</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="second_vendor_name">Second Vendor Name*</label>
+            <select id="second_vendor_name" name="second_vendor_name" required class="Fieldlist">
+              <option value="">Select Vendor Name</option>
+              <option value="VMR Valuators">VMR Valuators</option>
+              <option value="JN Constructions">JN Constructions</option>
+              <option value="Sailaja">Sailaja</option>
+              <option value="Naga Prasanth">Naga Prasanth</option>
+              <option value="Mourya Concepts">Mourya Concepts</option>
+              <option value="Adroit Technical Services Pvt. Ltd.">Adroit Technical Services Pvt. Ltd.</option>
+              <option value="A R Bhathakande Association">A R Bhathakande Association</option>
+              <option value="GCA Cost Consultants">GCA Cost Consultants</option>
+              <option value="Black Olive Ventures Pvt. Ltd.">Black Olive Ventures Pvt. Ltd.</option>
+              <option value="Divine Associates">Divine Associates</option>
+              <option value="Shakthivel Groups">Shakthivel Groups</option>
+              <option value="NSM Associates">NSM Associates</option>
+              <option value="SJR Associates Pvt. Ltd.">SJR Associates Pvt. Ltd.</option>
+              <option value="PropEdge Valuations Pvt. Ltd.">PropEdge Valuations Pvt. Ltd.</option>
+              <option value="Sreenidhi Consultancy">Sreenidhi Consultancy</option>
+              <option value="Vighneshwara Engineer's">Vighneshwara Engineer's</option>
+              <option value="SMR Engineers">SMR Engineers</option>
+              <option value="Pavan Sai Associates">Pavan Sai Associates</option>
+              <option value="Sriram Associates">Sriram Associates</option>
+              <option value="D V Yogisha Rao">D V Yogisha Rao</option>
+              <option value="Arjun HR Valuers">Arjun HR Valuers</option>
+              <option value="G K Construction">G K Construction</option>
+              <option value="Stiffeners Property Valuers & Consultants _ Pondycherry">Stiffeners Property Valuers & Consultants _ Pondycherry</option>
+              <option value="Ramani Associates">Ramani Associates</option>
+              <option value="M Shabarinath Associates">M Shabarinath Associates</option>
+              <option value="Srinivasa Associates">Srinivasa Associates</option>
+              <option value="Kothawar Santosh">Kothawar Santosh</option>
+              <option value="Ramanujan (Apex)">Ramanujan (Apex)</option>
+              <option value="Harish Mudragada">Harish Mudragada</option>
+              <option value="BVS Prakash">BVS Prakash</option>
+              <option value="Janasaran Associates">Janasaran Associates</option>
+              <option value="Sandeep (Shree Krishna)">Sandeep (Shree Krishna)</option>
+              <option value="Mohan Charma">Mohan Charma</option>
+              <option value="Amar Associates">Amar Associates</option>
+              <option value="BM Construction/ Muneer">BM Construction/ Muneer</option>
+              <option value="Kaligi Shivaraj">Kaligi Shivaraj</option>
+              <option value="Mallikarujunarao">Mallikarujunarao</option>
+              <option value="G K Associates">G K Associates</option>
+              <option value="K Krishna">K Krishna</option>
+              <option value="Anil Kumar Associates">Anil Kumar Associates</option>
+              <option value="P Rama Mohana Rao">P Rama Mohana Rao</option>
+              <option value="Vijay Group">Vijay Group</option>
+              <option value="Creative Valuers & Engineers">Creative Valuers & Engineers</option>
+              <option value="Protocol Valuers Pvt. Ltd.">Protocol Valuers Pvt. Ltd.</option>
+              <option value="Bhirud & Associates">Bhirud & Associates</option>
+              <option value="JBA Consulting & Advisory Services LLP">JBA Consulting & Advisory Services LLP</option>
+              <option value="Infinity Engineering Solution">Infinity Engineering Solution</option>
+              <option value="Formulaic Engineers Pvt. Ltd.">Formulaic Engineers Pvt. Ltd.</option>
+              <option value="Magpie Engineering Pvt. Ltd.">Magpie Engineering Pvt. Ltd.</option>
+              <option value="Real Apple Consultancy">Real Apple Consultancy</option>
+              <option value="Yuvaan Consultants">Yuvaan Consultants</option>
+              <option value="Braj Kishor Dwivedi">Braj Kishor Dwivedi</option>
+              <option value="Aadya Associates">Aadya Associates</option>
+              <option value="Propmatrix Consultants">Propmatrix Consultants</option>
+              <option value="Techvalue Services (ICICI)">Techvalue Services (ICICI)</option>
+              <option value="Swapnil Nahar (ICICI)">Swapnil Nahar (ICICI)</option>
+              <option value="Mahim Corporation">Mahim Corporation</option>
+              <option value="Astute Valuers">Astute Valuers</option>
+              <option value="Rajesh Shaha">Rajesh Shaha</option>
+              <option value="Unity Constructions (ICICI)">Unity Constructions (ICICI)</option>
+              <option value="Vaastumulya Engineer">Vaastumulya Engineer</option>
+              <option value="Bitopan Sarmah">Bitopan Sarmah</option>
+              <option value="Sarif Ahmed">Sarif Ahmed</option>
+              <option value="RDSP Valuation">RDSP Valuation</option>
+              <option value="Mahesh Deshpande">Mahesh Deshpande</option>
+              <option value="Irshad Quazi">Irshad Quazi</option>
+              <option value="Vedant Associates (ICICI)">Vedant Associates (ICICI)</option>
+              <option value="Sunil Patil (ICICI)">Sunil Patil (ICICI)</option>
+              <option value="Strucon Consultancy Services">Strucon Consultancy Services</option>
+              <option value="Dhyey Associates">Dhyey Associates</option>
+              <option value="Nitin Shah">Nitin Shah</option>
+              <option value="Keyur Patel">Keyur Patel</option>
+              <option value="Evaluation Expertz">Evaluation Expertz</option>
+              <option value="Datar Technical">Datar Technical</option>
+              <option value="Aggarwal & Associates">Aggarwal & Associates</option>
+              <option value="USP / Renu">USP / Renu</option>
+              <option value="Alok Pundir">Alok Pundir</option>
+              <option value="Rakesh Jain">Rakesh Jain</option>
+              <option value="Kanassure">Kanassure</option>
+              <option value="Nirman Consultants">Nirman Consultants</option>
+              <option value="Designograph">Designograph</option>
+              <option value="R Bajaj & Associates">R Bajaj & Associates</option>
+              <option value="Anand and Anand">Anand and Anand</option>
+              <option value="Dimensions">Dimensions</option>
+              <option value="Sunrise Engineers & Landscapers">Sunrise Engineers & Landscapers</option>
+              <option value="Bhupinder Pal Singh & Associates">Bhupinder Pal Singh & Associates</option>
+              <option value="Er. Prashant Sharma- New">Er. Prashant Sharma- New</option>
+              <option value="Ruindrson Valuers- New">Ruindrson Valuers- New</option>
+              <option value="Sandeep Mandawaria-New">Sandeep Mandawaria-New</option>
+              <option value="Design Plus/ Antriksh">Design Plus/ Antriksh</option>
+              <option value="GK Construction">GK Construction</option>
+              <option value="GK associates">GK associates</option>
+              <option value="Yenni Rajesh">Yenni Rajesh</option>
+              <option value="PVR Associates">PVR Associates</option>
+              <option value="P Venkata Ramana">P Venkata Ramana</option>
+              <option value="VH Fayaz Ahmed">VH Fayaz Ahmed</option>
+              <option value="Sri Kumaran Constructions">Sri Kumaran Constructions</option>
+              <option value="Merit Associates">Merit Associates</option>
+              <option value="Rama Consultant - Ujjain">Rama Consultant - Ujjain</option>
+              <option value="Valfin Advisory India Pvt. Ltd.">Valfin Advisory India Pvt. Ltd.</option>
+              <option value="Vattyam Nagarja Sivaraman">Vattyam Nagarja Sivaraman</option>
+              <option value="Aadya Associates">Aadya Associates</option>
+              <option value="Pranab Jyoti Dutta">Pranab Jyoti Dutta</option>
+              <option value="Esteem">Esteem</option>
+              <option value="Naveen">Naveen</option>
+            </select>
+        </div>
+    </div>
+
+    
+
+    <div class="form-row">
+    
+            <div class="form-group">
+                <label for="report_received_date_1">Report Received Date 1</label>
+                <input type="date" id="report_received_date_1" name="report_received_date_1" required>
+              
+            </div>
+            <div class="form-group">
+                <label for="report_received_date_2">Report Received Date 2</label>
+                <input type="date" id="report_received_date_2" name="report_received_date_2" required> 
+                
+            </div>
+        
+        
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="disposition_valuation">Disposition</label>
+            <input type="text" id="disposition_valuation" name="disposition_valuation" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="case_revert_date">Case Revert Date</label>
+            <input type="date" id="case_revert_date" name="case_revert_date" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="valuation_query">Valuation Query</label>
+            <textarea id="valuation_query" name="valuation_query" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="vendor_query">Vendors Query</label>
+            <textarea id="vendor_query" name="vendor_query" required></textarea>
+        </div>
+    </div>
+
+    <button type="submit" id="continueBtn" disabled class="legal-btn">Continue</button>
+</form>
+
+
+ <!--=============== FOOTER ===============-->
+ <footer class="footer container">
+    <div class="footer__container grid">
+      <div class="footer__content">
+        <a href="index.html" class="footer__logo">
+          <img src="./assets/img/logo.svg" alt="" class="footer__logo-img" />
+        </a>
+        <h4 class="footer__subtitle">Contact</h4>
+        <p class="footer__description">
+          <span>Address:</span> SBFC Finance Limited
+          (Erstwhile SBFC Finance Private Limited),
+          103, First Floor, C & B Square,
+          Sangam Complex,
+          Andheri Kurla Road,
+          Chakala, Andheri East,
+          Mumbai – 400059,
+          Maharashtra, India
+          CIN: U67190MH2008PLC178270
+        </p>
+        <p class="footer__description">
+          <span>Phone:</span>022-6831-3333
+        </p>
+        <p class="footer__description">
+          <span>Hours:</span> 24hrs, Mon - Sun
+        </p>
+      
+      </div>
+      <div class="footer__content">
+        <h3 class="footer__title">Address</h3>
+        <ul class="footer__links">
+          <li><a href="#" class="footer__link">About Us</a></li>
+         
+          <li><a href="#" class="footer__link">Privacy Policy</a></li>
+          <li><a href="#" class="footer__link">Terms & Conditions</a></li>
+          <li><a href="#" class="footer__link">Contact Us</a></li>
+          <li><a href="#" class="footer__link">Support Center</a></li>
+        </ul>
+      </div>
+      <div class="footer__content">
+        <h3 class="footer__title">My Account</h3>
+        <ul class="footer__links">
+          <li><a href="#" class="footer__link">Terms of Use</a></li>
+          <li><a href="#" class="footer__link">Privacy Policy</a></li>
+          <li><a href="#" class="footer__link">Fair Practice Code</a></li>
+          <li><a href="#" class="footer__link">List of KYC Documents</a></li>
+          <li><a href="#" class="footer__link">Payment Modes</a></li>
+          <li><a href="#" class="footer__link">FAQs and policies</a></li>
+        </ul>
+      </div>
+      <div class="footer__content">
+        <img src="https://www.sbfc.com/cmsproject/mediaGallery/images/qr-1658326497.png?rm=1702233000" alt="">
+
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="copyright">&copy; 2024 SBFC. All right reserved</p>
+     
+    </div>
+  </footer>
+
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const continueBtn = document.getElementById("continueBtn");
+        const formElements = document.querySelectorAll("#valuation input, #valuation select, #valuation textarea");
+
+        formElements.forEach(element => {
+            element.addEventListener("input", toggleSubmitButton);
+        });
+
+        function toggleSubmitButton() {
+            const allFieldsValid = Array.from(formElements).every(element => {
+                return element.value.trim() !== "";
+            });
+            continueBtn.disabled = !allFieldsValid;
+        }
+    });
+</script>
+
+</body>
+</html>

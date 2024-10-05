@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive CPA Registration Form</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/Screening.css">
+
+    <!-- Script code -->
+
+    <script>
+function fetchData() {
+    var refid = document.getElementById('refid1').value.trim(); 
+    if (refid) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'fetch_data.php?refid=' + refid, true);
+        xhr.onload = function () {
+            if (this.status === 200) {
+                var data = JSON.parse(this.responseText);
+                if (data) {
+                  document.getElementById('central_cpa_name').value = data.central_cpa_name || '';
+                            document.getElementById('central_cpa_name').disabled = true; 
+                            document.getElementById('received_date').value = data.received_date || '';
+                            document.getElementById('received_date').readOnly=true;
+                            document.getElementById('ftr_tnr').value = data.ftr_tnr || '';
+                            document.getElementById('ftr_tnr').disabled=true;
+                            document.getElementById('cpa_acceptance').value = data.cpa_acceptance || '';
+                            document.getElementById('cpa_acceptance').disabled=true;
+                            document.getElementById('ftq').value = data.ftq || '';
+                            document.getElementById('ftq').readOnly=true;
+                            document.getElementById('final_observations').value = data.final_observations || '';
+                            document.getElementById('final_observations').readOnly=true;
+                            document.getElementById('month').value = data.month || '';
+                            document.getElementById('month').readOnly=true;
+                            document.getElementById('acceptance_date').value = data.acceptance_date || '';
+                            document.getElementById('acceptance_date').readOnly=true;
+                            document.getElementById('approved_from_crdt').value = data.approved_from_crdt || '';
+                            document.getElementById('revert_cpa_name').value = data.revert_cpa_name || '';
+                            document.getElementById('revised_cpa_acceptance').value = data.revised_cpa_acceptance || '';
+                            document.getElementById('revised_cpa_acceptance').disabled=true;
+                } else {
+                    alert('No data found for the given RefID');
+                }
+            } else {
+                alert('Error fetching data');
+            }
+        };
+        xhr.send();
+    } else {
+        alert('Please enter a RefID');
+    }
+}
+
+function clearFields() {
+   
+    document.getElementById('central_cpa_name').value = '';
+    document.getElementById('received_date').value = '';
+    document.getElementById('ftr_tnr').value = '';
+    document.getElementById('cpa_acceptance').value = '';
+    document.getElementById('ftq').value = '';
+    document.getElementById('final_observations').value = '';
+    document.getElementById('month').value = '';
+    document.getElementById('acceptance_date').value = '';
+    document.getElementById('approved_from_crdt').value = '';
+    document.getElementById('revert_cpa_name').value = '';
+    document.getElementById('revised_cpa_acceptance').value = '';
+
+            // Resetting disabled and readOnly attributes to allow new input
+    document.getElementById('central_cpa_name').disabled = false; 
+    document.getElementById('received_date').readOnly = false; 
+    document.getElementById('ftr_tnr').disabled = false; 
+    document.getElementById('cpa_acceptance').readOnly = false; 
+
+}
+
+
+
+  </script>
+
+
+
+
+
+
+
+
+</head>
+<body >
+
+    <header class="header">
+     
+        <nav class="nav container">
+          <a href="index.html" class="nav__logo">
+            <img
+              class="nav__logo-img"
+              src="https://www.sbfc.com/images/logo-sbfc.svg?rm=1702233000"
+              alt="website logo"
+            />
+          </a>
+          <div class="nav__menu" id="nav-menu">
+            <ul class="nav__list">
+              <li class="nav__item">
+                <a href="home.php" class="nav__link">Home</a>
+              </li>
+              <li class="nav__item">
+                <a href="basic_cpa_detail.html" class="nav__link">Basic</a>
+              </li>
+              <li class="nav__item">
+                <a href="screening.html" class="nav__link active-link">Screening</a>
+              </li>
+              <li class="nav__item">
+                <a href="valuation.html" class="nav__link">Valuation</a>
+              </li>
+              <li class="nav__item">
+                <a href="legal.html" class="nav__link">Legal</a>
+              </li>
+              <li class="nav__item">
+                <a href="assessment.html" class="nav__link">Assessment</a>
+              </li>
+          
+              <!-- <li class="nav__item">
+                <a href="login-register.html" class="nav__link active-link"
+                  >Login</a
+                >
+              </li> -->
+            </ul>
+            <div class="header__search">
+              <input
+                type="text"
+                placeholder="Enter RefId..."
+                class="form__input"
+                id="refid1"
+              />
+              <button class="search__btn" onclick="fetchData()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+  </svg>
+              </button>
+            </div>
+          </div>
+         
+        </nav>
+      </header>
+
+      <div class="eleven">
+        <h1 class="h_1">Screening form</h1>
+      </div>
+
+
+<form  class="form-screening" method="post" action="save_screening.php" id="screening">
+    <div class="form-row">
+        <div class="form-group">
+            <label for="central_cpa_name">Central CPA Name*</label>
+            <select
+                        id="central_cpa_name"
+                        name="central_cpa_name"
+                        required
+                        class="Fieldlist"
+                      >
+                        <option value="">Select CPA Name</option>
+                        <option value="Pratik Bhuvad">Pratik Bhuvad</option>
+                        <option value="Shailesh Agre">Shailesh Agre</option>
+                        <option value="Jitesh Dalavi">Jitesh Dalavi</option>
+                        <option value="Shreyash Hule">Shreyash Hule</option>
+                        <option value="Srushti Shirke">Srushti Shirke</option>
+                        <option value="Shweti Rajawat">Shweti Rajawat</option>
+                        <option value="Suraj Sutar">Suraj Sutar</option>
+                        <option value="Shraddha Kadam">Shraddha Kadam</option>
+                        <option value="Sagar Katale">Sagar Katale</option>
+                        
+                      </select>
+        </div>
+        <div class="form-group">
+            <label for="received_date">Received Date*</label>
+            <input type="date" id="received_date" name="received_date" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="ftr_tnr">FTR/FTNR*</label>
+            <select
+                          id="ftr_tnr"
+                          name="ftr_tnr"
+                          required
+                          class="Fieldlist"
+                        >
+                          <option value="">Select FTR/TNR</option>
+                          <option value="FTR">FTR</option>
+                          <option value="FTNR">FTNR</option>
+                        </select>
+        </div>
+        <div class="form-group">
+            <label for="cpa_acceptance">CPA Acceptance*</label>
+            <select
+            id="cpa_acceptance"
+            name="cpa_acceptance"
+            required
+            class="Fieldlist"
+          >
+            <option value="">Select CPA Acceptance Status</option>
+            <option value="Query">Query Raised</option>
+            <!-- <option value="Raised">Raised</option> -->
+            <option value="Accepted">Accepted</option>
+            <option value="Under Review">Under Review</option>
+            <option value="On Hold">On Hold</option>
+          </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="ftq">FTQ*</label>
+            <textarea id="ftq" name="ftq" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="final_observations">Final Observation*</label>
+            <textarea id="final_observations" name="final_observations" required></textarea>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="month">Month*</label>
+            <input type="month" id="month" name="month" required />
+        </div>
+        <div class="form-group">
+            <label for="acceptance_date">Acceptance Date*</label>
+            <input type="date" id="acceptance_date" name="acceptance_date" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="approved_from_crdt">Approved from CRDT</label>
+            <select
+                          id="approved_from_crdt"
+                          name="approved_from_crdt"
+                          
+                          class="Fieldlist"
+                        >
+                          <option value="">Select Approval Status</option>
+                          <option value="Credit approval">Credit approval</option>
+                          <option value="Business approval">Business approval</option>
+                        </select>
+        </div>
+        <div class="form-group">
+            <label for="revert_cpa_name">Revert CPA Name</label>
+            <select
+            id="revert_cpa_name"
+            name="revert_cpa_name"
+            required
+            class="Fieldlist"
+          >
+            <option value="">Select CPA Name</option>
+            <option value="Pratik Bhuvad">Pratik Bhuvad</option>
+            <option value="Shailesh Agre">Shailesh Agre</option>
+            <option value="Jitesh Dalavi">Jitesh Dalavi</option>
+            <option value="Shreyash Hule">Shreyash Hule</option>
+            <option value="Srushti Shirke">Srushti Shirke</option>
+            <option value="Shweti Rajawat">Shweti Rajawat</option>
+            <option value="Suraj Sutar">Suraj Sutar</option>
+            <option value="Shraddha Kadam">Shraddha Kadam</option>
+            <option value="Sagar Katale">Sagar Katale</option>
+            
+          </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="revised_cpa_acceptance">Revised CPA Acceptance Status*</label>
+            <select
+            id="revised_cpa_acceptance"
+            name="revised_cpa_acceptance"
+            required
+            class="Fieldlist"
+          >
+            <option value="">Select Status</option>
+            <option value="Query Raised">Query Raised</option>
+            <option value="CPA Accepted">CPA Accepted</option>
+            <option value="NA">NA</option>
+          </select>
+        </div>
+    </div>
+
+    <button type="submit" id="continueBtn" class="screening-next" disabled>Continue</button>
+</form>
+
+
+ <!--=============== FOOTER ===============-->
+ <footer class="footer container">
+    <div class="footer__container grid">
+      <div class="footer__content">
+        <a href="index.html" class="footer__logo">
+          <img src="./assets/img/logo.svg" alt="" class="footer__logo-img" />
+        </a>
+        <h4 class="footer__subtitle">Contact</h4>
+        <p class="footer__description">
+          <span>Address:</span> SBFC Finance Limited
+          (Erstwhile SBFC Finance Private Limited),
+          103, First Floor, C & B Square,
+          Sangam Complex,
+          Andheri Kurla Road,
+          Chakala, Andheri East,
+          Mumbai – 400059,
+          Maharashtra, India
+          CIN: U67190MH2008PLC178270
+        </p>
+        <p class="footer__description">
+          <span>Phone:</span>022-6831-3333
+        </p>
+        <p class="footer__description">
+          <span>Hours:</span> 24hrs, Mon - Sun
+        </p>
+       
+      </div>
+      <div class="footer__content">
+        <h3 class="footer__title">Address</h3>
+        <ul class="footer__links">
+          <li><a href="#" class="footer__link">About Us</a></li>
+         
+          <li><a href="#" class="footer__link">Privacy Policy</a></li>
+          <li><a href="#" class="footer__link">Terms & Conditions</a></li>
+          <li><a href="#" class="footer__link">Contact Us</a></li>
+          <li><a href="#" class="footer__link">Support Center</a></li>
+        </ul>
+      </div>
+      <div class="footer__content">
+        <h3 class="footer__title">My Account</h3>
+        <ul class="footer__links">
+          <li><a href="#" class="footer__link">Terms of Use</a></li>
+          <li><a href="#" class="footer__link">Privacy Policy</a></li>
+          <li><a href="#" class="footer__link">Fair Practice Code</a></li>
+          <li><a href="#" class="footer__link">List of KYC Documents</a></li>
+          <li><a href="#" class="footer__link">Payment Modes</a></li>
+          <li><a href="#" class="footer__link">FAQs and policies</a></li>
+        </ul>
+      </div>
+      <div class="footer__content">
+        <img src="https://www.sbfc.com/cmsproject/mediaGallery/images/qr-1658326497.png?rm=1702233000" alt="">
+
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p class="copyright">&copy; 2024 SBFC. All right reserved</p>
+     
+    </div>
+  </footer>
+
+  <script>
+     document.addEventListener("DOMContentLoaded", function () {
+            const continueBtn = document.getElementById("continueBtn");
+            const formElements = document.querySelectorAll("#screening input, #screening select, #screening textarea");
+
+            // Initialize the button state
+            toggleSubmitButton(); // Check if the button should be enabled or disabled on load
+
+            formElements.forEach(element => {
+                element.addEventListener("input", toggleSubmitButton);
+                element.addEventListener("change", toggleSubmitButton); // For select elements
+            });
+
+            function toggleSubmitButton() {
+                const allFieldsFilled = Array.from(formElements).every(element => {
+                    return element.value.trim() !== ""; // Check if the field is filled
+                });
+                continueBtn.disabled = !allFieldsFilled; // Enable or disable button
+            }
+        });
+</script>
+
+
+</body>
+</html>

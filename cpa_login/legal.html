@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPA Legal Registration Form</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/legal.css">
+   <!-- Script code -->
+
+   <script>
+    function fetchData() {
+        var refid = document.getElementById('refid1').value.trim();  // Trim whitespace from input
+        if (refid) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'fetch_data.php?refid=' + refid, true);
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    try {
+                        var data = JSON.parse(this.responseText);
+                        console.log('Response data:', data); // Log the response for debugging
+                        if (data) {
+                            document.getElementById('cpa_name_legal').value = data.cpa_name_legal || '';
+                            document.getElementById('cpa_name_legal').disabled = true; // Disable field
+                            document.getElementById('legal').value = data.legal || '';
+                            document.getElementById('legal').readOnly = true; // Make field read-only
+                            document.getElementById('date_of_initiation_legal').value = data.date_of_initiation_legal || '';
+                            document.getElementById('date_of_initiation_legal').readOnly = true; // Make field read-only
+                            document.getElementById('disposition_legal').value = data.disposition_legal || '';           
+                            document.getElementById('report_received_date_legal').value = data.report_received_date_legal || '';                    
+                            document.getElementById('vendor_name_legal').value = data.vendor_name_legal || '';
+                            document.getElementById('vendor_name_legal').disabled = true; // Disable field
+                            document.getElementById('legal_initiation_query').value = data.legal_initiation_query || '';
+                        } else {
+                            alert('No data found for the given RefID');
+                        }
+                    } catch (e) {
+                        console.error('Error parsing JSON:', e);
+                        alert('Invalid response from server');
+                    }
+                } else {
+                    alert('Error fetching data: ' + this.status);
+                }
+            };
+
+            xhr.onerror = function () {
+                alert('Request error');
+            };
+
+            xhr.send();
+        } else {
+            alert('Please enter a RefID');
+        }
+    }
+
+    function clearFields() {
+        document.getElementById('refid').value = ''; // Clear RefID input
+        document.getElementById('cpa_name_legal').value = '';
+        document.getElementById('legal').value = '';
+        document.getElementById('date_of_initiation_legal').value = '';
+        document.getElementById('disposition_legal').value = '';
+        document.getElementById('report_received_date_legal').value = '';
+        document.getElementById('vendor_name_legal').value = '';
+        document.getElementById('legal_initiation_query').value = '';
+
+        // Resetting disabled and readOnly attributes to allow new input
+        document.getElementById('cpa_name_legal').disabled = false; 
+        document.getElementById('legal').readOnly = false; 
+        document.getElementById('date_of_initiation_legal').readOnly = false; 
+        document.getElementById('vendor_name_legal').disabled = false; 
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+  <!--=============== HEADER ===============-->
+  <header class="header">
+     
+    <nav class="nav container">
+      <a href="index.html" class="nav__logo">
+        <img
+          class="nav__logo-img"
+          src="https://www.sbfc.com/images/logo-sbfc.svg?rm=1702233000"
+          alt="website logo"
+        />
+      </a>
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a href="home.php" class="nav__link">Home</a>
+          </li>
+          <li class="nav__item">
+            <a href="basic_cpa_detail.html" class="nav__link">Basic</a>
+          </li>
+          <li class="nav__item">
+            <a href="screening.html" class="nav__link">Screening</a>
+          </li>
+          <li class="nav__item">
+            <a href="valuation.html" class="nav__link">Valuation</a>
+          </li>
+          <li class="nav__item">
+            <a href="legal.html" class="nav__link active-link">Legal</a>
+          </li>
+          <li class="nav__item">
+            <a href="assessment.html" class="nav__link">Assessment</a>
+          </li>
+      
+          <!-- <li class="nav__item">
+            <a href="login-register.html" class="nav__link active-link"
+              >Login</a
+            >
+          </li> -->
+        </ul>
+        <div class="header__search">
+          <input
+            type="text"
+            placeholder="Enter RefId..."
+            class="form__input"
+            id="refid1"
+          />
+          <button class="search__btn" onclick="fetchData()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+</svg>
+          </button>
+        </div>
+      </div>
+     
+    </nav>
+  </header>
+
+  <div class="eleven">
+    <h1 class="h_1">Legal form</h1>
+  </div>
+
+
+
+<form class="form-legal" method="post" action="save_legal.php" id="legal_page">
+    <div class="form-row">
+        <div class="form-group">
+            <label for="cpa_name_legal">CPA Name*</label>
+            <select id="cpa_name_legal" name="cpa_name_legal" required class="Fieldlist">
+              <option value="">Select CPA Name</option>
+              <option value="Pratik Bhuvad">Pratik Bhuvad</option>
+              <option value="Shailesh Agre">Shailesh Agre</option>
+              <option value="Jitesh Dalavi">Jitesh Dalavi</option>
+              <option value="Shreyash Hule">Shreyash Hule</option>
+              <option value="Srushti Shirke">Srushti Shirke</option>
+              <option value="Shweti Rajawat">Shweti Rajawat</option>
+              <option value="Suraj Sutar">Suraj Sutar</option>
+              <option value="Shraddha Kadam">Shraddha Kadam</option>
+              <option value="Sagar Katale">Sagar Katale</option>
+
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="legal">Legal*</label>
+            <input type="text" id="legal" name="legal" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="date_of_initiation_legal">Date of Initiation*</label>
+            <input type="date" id="date_of_initiation_legal" name="date_of_initiation_legal" required>
+        </div>
+        <div class="form-group">
+            <label for="disposition_legal">Disposition</label>
+            <input type="text" id="disposition_legal" name="disposition_legal" required>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="report_received_date_legal">Report Received Date</label>
+            <input type="date" id="report_received_date_legal" name="report_received_date_legal" required>
+        </div>
+        <div class="form-group">
+            <label for="vendor_name_legal">Vendor Name*</label>
+            <select id="vendor_name_legal" name="vendor_name_legal" required class="Fieldlist">
+              <option value="">Select Vendor Name</option>
+              <option value="T Mahesh Kumar">T Mahesh Kumar</option>
+              <option value="Patil Legal Solution">Patil Legal Solution</option>
+              <option value="Velayudham Advocate">Velayudham Advocate</option>
+              <option value="Law hands Consultancy">Law hands Consultancy</option>
+              <option value="R & P Partners">R & P Partners</option>
+              <option value="K L Associates">K L Associates</option>
+              <option value="Vani Enterprises">Vani Enterprises</option>
+              <option value="Lakshmi Kanth Rao">Lakshmi Kanth Rao</option>
+              <option value="Sunil Katagi ">Sunil Katagi </option>
+              <option value="C S Associates">C S Associates</option>
+              <option value="P K Ponnaiah">P K Ponnaiah</option>
+              <option value="K Velyadham ">K Velyadham </option>
+              <option value="YV Law Associates">YV Law Associates</option>
+              <option value="Mohan Charma">Mohan Charma </option>
+              <option value="K L ASSOCITES">K L ASSOCITES</option>
+              <option value="VANI ENTERPRISES">VANI ENTERPRISES </option>
+              <option value="Eshwar Kumar">Eshwar Kumar</option>
+              <option value="Syamala Sreenivas Reddy">Syamala Sreenivas Reddy</option>
+              <option value="Pinna Ramulu">Pinna Ramulu</option>
+              <option value="Battu Rajender">Battu Rajender</option>
+              <option value="Sana Chandra Mohan">Sana Chandra Mohan</option>
+              <option value="K Sri Krishna Rayulu">K Sri Krishna Rayulu</option>
+              <option value="R Krishna">R Krishna</option>
+              <option value="Rama Mohan Rao">Rama Mohan Rao</option>
+              <option value="S L Shivannavar">S L Shivannavar</option>
+              <option value="V N S Murthy">V N S Murthy</option>
+              <option value="Vijayalakshmi">Vijayalakshmi</option>
+              <option value="Lakshmi K L S Associates">Lakshmi K L S Associates</option>
+              <option value="Ravi Shankar">Ravi Shankar</option>
+              <option value="P Narender">P Narender</option>
+              <option value="T Sravan">T Sravan</option>
+              <option value="Droit Legal Solutions">Droit Legal Solutions</option>
+              <option value="V.Patke & Co.">V.Patke & Co.</option>
+              <option value="Law Veritas">Law Veritas</option>
+              <option value="Adv. Preksha J. Gor">Adv. Preksha J. Gor</option>
+              <option value="Garvesh Barjatiya">Garvesh Barjatiya</option>
+              <option value="Ajay Sendhav ">Ajay Sendhav </option>
+              <option value="Sanjay Gupta">Sanjay Gupta</option>
+              <option value="Adv Gyan Abhinav">Adv Gyan Abhinav</option>
+              <option value="Adv Sumit Kumar Singh">Adv Sumit Kumar Singh</option>
+              <option value="Sahil Bangde (ICICI)">Sahil Bangde (ICICI)</option>
+              <option value="Le Expart Associates">Le Expart Associates</option>
+              <option value="Nayan Kansara">Nayan Kansara</option>
+              <option value="Bhatt & Bhatt Associate">Bhatt & Bhatt Associate</option>
+              <option value="Pankaj Parikh">Pankaj Parikh</option>
+              <option value="Kapil M Joshi">Kapil M Joshi</option>
+              <option value="Banatwala Advocates and associates">Banatwala Advocates and associates</option>
+              <option value="Dilip Sharma">Dilip Sharma</option>
+              <option value="Chetan Soriya">Chetan Soriya</option>
+              <option value="Shiv Vilas Saraf">Shiv Vilas Saraf</option>
+              <option value="Pawan Sharma">Pawan Sharma</option>
+              <option value="Brajesh R Yadav">Brajesh R Yadav</option>
+              <option value="Vijay Lonkar">Vijay Lonkar</option>
+              <option value="Bhushan Herole (ICICI)">Bhushan Herole (ICICI)</option>
+              <option value="Adv Kalpeshwari">Adv Kalpeshwari</option>
+              <option value="Adv Gandhi and Associate">Adv Gandhi and Associate</option>
+              <option value="Shweta Mane (Kakkad) (ICICI)">Shweta Mane (Kakkad) (ICICI)</option>
+              <option value="Dharmendra Chaudhari">Dharmendra Chaudhari</option>
+              <option value="Akash Mangtani">Akash Mangtani</option>
+              <option value="Nawaz Ahmed">Nawaz Ahmed</option>
+              <option value="Jayanta Borah">Jayanta Borah</option>
+              <option value="Deepak Saramble">Deepak Saramble</option>
+              <option value="Abhay Kore">Abhay Kore</option>
+              <option value="Ruchi Tiwari">Ruchi Tiwari</option>
+              <option value="Manoj Sisodiya">Manoj Sisodiya</option>
+              <option value="SP Chavan (ICICI)">SP Chavan (ICICI)</option>
+              <option value="Adv Ajay W Gode">Adv Ajay W Gode</option>
+              <option value="Adv Shishir Deshpande (ICICI)">Adv Shishir Deshpande (ICICI)</option>
+              <option value="Rajesh Porwal">Rajesh Porwal </option>
+              <option value="Santosh Pardeshi">Santosh Pardeshi</option>
+              <option value="S. Gandhi">S. Gandhi</option>
+              <option value="Adv. V.S. Sarda (ICICI)">Adv. V.S. Sarda (ICICI)</option>
+              <option value="Adv. B. O. Johari">Adv. B. O. Johari</option>
+              <option value="Pawan Chandratre">Pawan Chandratre</option>
+              <option value="Ram Babu">Ram Babu</option>
+              <option value="Somil Shrivastava">Somil Shrivastava</option>
+              <option value="Ram Bhagat Dubey">Ram Bhagat Dubey</option>
+              <option value="H.C. RAI">H.C. RAI</option>
+              <option value="Naveen Srivastava">Naveen Srivastava</option>
+              <option value="Sudeep Srivastav">Sudeep Srivastav</option>
+              <option value="Brijesh Asthana">Brijesh Asthana</option>
+              <option value="Raheja Associates">Raheja Associates</option>
+              <option value="R. K Associates">R. K Associates</option>
+              <option value="Meena Dikshit">Meena Dikshit</option>
+              <option value="Bansal Law Associates">Bansal Law Associates</option>
+              <option value="Pass & Associates">Pass & Associates</option>
+              <option value="Kumar & Associates">Kumar & Associates</option>
+              <option value="Kshitij Kumar">Kshitij Kumar</option>
+              <option value="Priya Kantt Manu">Priya Kantt Manu</option>
+              <option value="Manish Raj Garg">Manish Raj Garg</option>
+              <option value="Atul Kumar">Atul Kumar</option>
+              <option value="Rajesh Sharma">Rajesh Sharma</option>
+              <option value="Pankaj Sharma">Pankaj Sharma</option>
+              <option value="Hardeep Singh Ranu">Hardeep Singh Ranu</option>
+              <option value="Kuldeep Kanoria">Kuldeep Kanoria</option>
+              <option value="Joginder Singh">Joginder Singh</option>
+              <option value="Jain Associates">Jain Associates</option>
+              <option value="Aditya Partap Singh">Aditya Partap Singh</option>
+              <option value="Man Mohan Singh">Man Mohan Singh</option>
+              <option value="Gurudev Singh Saini">Gurudev Singh Saini</option>
+              <option value="Jogender">Jogender</option>
+              <option value="Vikas Verma">Vikas Verma</option>
+              <option value="Lalit Kakkar">Lalit Kakkar</option>
+              <option value="Ashish Goel">Ashish Goel</option>
+              <option value="Harmohinder Singh">Harmohinder Singh</option>
+              <option value="Himanshu Jindal">Himanshu Jindal </option>
+              <option value="Rupinder Singh">Rupinder Singh</option>
+              <option value="Giriraj Soni & Associates-New">Giriraj Soni & Associates-New</option>
+              <option value="RMV LAW Associates">RMV LAW Associates</option>
+              <option value="Bhuwnesh Jain-New">Bhuwnesh Jain-New</option>
+              <option value="Prakash Kulhari- New">Prakash Kulhari- New</option>
+              <option value="Mukul Angiras-New">Mukul Angiras-New</option>
+              <option value="Srm Partners-New">Srm Partners-New</option>
+              <option value="Dinesh Kumar Saini- New">Dinesh Kumar Saini- New</option>
+              <option value="Sandeep Mandawaria-New">Sandeep Mandawaria-New</option>
+              <option value="Mohit Gupta">Mohit Gupta</option>
+              <option value="Virender Singh">Virender Singh</option>
+              <option value="Manjeet">Manjeet</option>
+              <option value="Rohit Sharma">Rohit Sharma</option>
+              <option value="Naveen Pathania">Naveen Pathania</option>
+              <option value="Abhay Aggarwal">Abhay Aggarwal</option>
+              <option value="Ramsharan Sharma">Ramsharan Sharma</option>
+              <option value="Gyaaneshwar Thakral">Gyaaneshwar Thakral</option>
+              <option value="Amit Mittal">Amit Mittal</option>
+              <option value="Rajan Singhal">Rajan Singhal</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="legal_initiation_query">Legal Initiation Query</label>
+            <textarea id="legal_initiation_query" name="legal_initiation_query" required></textarea>
+        </div>
+    </div>
+
+    <button type="submit" id="continueBtn" disabled class="legal-btn">Continue</button>
+</form>
+
+
+    <!--=============== FOOTER ===============-->
+    <footer class="footer container">
+        <div class="footer__container grid">
+          <div class="footer__content">
+            <a href="index.html" class="footer__logo">
+              <img src="./assets/img/logo.svg" alt="" class="footer__logo-img" />
+            </a>
+            <h4 class="footer__subtitle">Contact</h4>
+            <p class="footer__description">
+              <span>Address:</span> SBFC Finance Limited
+              (Erstwhile SBFC Finance Private Limited),
+              103, First Floor, C & B Square,
+              Sangam Complex,
+              Andheri Kurla Road,
+              Chakala, Andheri East,
+              Mumbai – 400059,
+              Maharashtra, India
+              CIN: U67190MH2008PLC178270
+            </p>
+            <p class="footer__description">
+              <span>Phone:</span>022-6831-3333
+            </p>
+            <p class="footer__description">
+              <span>Hours:</span> 24hrs, Mon - Sun
+            </p>
+         
+          </div>
+          <div class="footer__content">
+            <h3 class="footer__title">Address</h3>
+            <ul class="footer__links">
+              <li><a href="#" class="footer__link">About Us</a></li>
+             
+              <li><a href="#" class="footer__link">Privacy Policy</a></li>
+              <li><a href="#" class="footer__link">Terms & Conditions</a></li>
+              <li><a href="#" class="footer__link">Contact Us</a></li>
+              <li><a href="#" class="footer__link">Support Center</a></li>
+            </ul>
+          </div>
+          <div class="footer__content">
+            <h3 class="footer__title">My Account</h3>
+            <ul class="footer__links">
+              <li><a href="#" class="footer__link">Terms of Use</a></li>
+              <li><a href="#" class="footer__link">Privacy Policy</a></li>
+              <li><a href="#" class="footer__link">Fair Practice Code</a></li>
+              <li><a href="#" class="footer__link">List of KYC Documents</a></li>
+              <li><a href="#" class="footer__link">Payment Modes</a></li>
+              <li><a href="#" class="footer__link">FAQs and policies</a></li>
+            </ul>
+          </div>
+          <div class="footer__content">
+            <img src="https://www.sbfc.com/cmsproject/mediaGallery/images/qr-1658326497.png?rm=1702233000" alt="">
+  
+          </div>
+        </div>
+        <div class="footer__bottom">
+          <p class="copyright">&copy; 2024 SBFC. All right reserved</p>
+         
+        </div>
+      </footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const continueBtn = document.getElementById("continueBtn");
+        const formElements = document.querySelectorAll("#legal_page input, #legal_page select, #legal_page textarea");
+
+        formElements.forEach(element => {
+            element.addEventListener("input", toggleSubmitButton);
+        });
+
+        function toggleSubmitButton() {
+            const allFieldsValid = Array.from(formElements).every(element => {
+                return element.value.trim() !== "";
+            });
+            continueBtn.disabled = !allFieldsValid;
+        }
+    });
+</script>
+
+</body>
+</html>

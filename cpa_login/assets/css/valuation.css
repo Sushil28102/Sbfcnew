@@ -1,0 +1,134 @@
+
+.form-legal {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 900px;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    margin-left: 180px;
+}
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.form-group {
+    flex: 1;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    min-width: 45%; /* Ensures a minimum width for smaller screens */
+}
+.form-group:last-child {
+    margin-right: 0; /* Remove right margin for the last group */
+}
+label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+input, select, textarea {
+    padding: 15px;
+    font-size: 1.1em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+    height: 60px; /* Set equal height for all fields */
+}
+textarea {
+    height: 100px; /* Set height for text areas */
+    resize: vertical; /* Allow vertical resizing only */
+}
+input:hover, select:hover, textarea:hover {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+input:focus, select:focus, textarea:focus {
+    border-color: #007bff;
+    background-color: #f0f8ff;
+}
+.legal-btn {
+    padding: 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    border-radius: 6px;
+    width: 100%;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    height: 60px; /* Set equal height for the button */
+}
+.legal-btn:hover {
+    background-color: #218838;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+.legal-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+@media (max-width: 768px) {
+    .form-group {
+        min-width: 100%; /* Ensure full width on smaller screens */
+        margin-right: 0; /* Reset margin on smaller screens */
+    }
+}
+
+
+.h_1 {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    font-family: "Raleway", sans-serif;
+    font-weight: 300;
+    font-size: 40px;
+    color: #080808;
+    -webkit-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+  }
+  
+  .eleven h1 {
+    font-size: 30px;
+    text-align: center;
+    line-height: 1.5em;
+    padding-bottom: 45px;
+    font-family: "Playfair Display", serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #111;
+  }
+  
+  .eleven h1:before {
+    position: absolute;
+    left: 0;
+    bottom: 20px;
+    width: 60%;
+    left: 50%;
+    margin-left: -30%;
+    height: 1px;
+    content: "";
+    background-color: #777;
+    z-index: 4;
+  }
+  .eleven h1:after {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 50%;
+    margin-left: -20px;
+    bottom: 0px;
+    content: "\00a7";
+    font-size: 30px;
+    line-height: 40px;
+    color: #c50000;
+    font-weight: 400;
+    z-index: 5;
+    display: block;
+    background-color: #f8f8f8;
+  }

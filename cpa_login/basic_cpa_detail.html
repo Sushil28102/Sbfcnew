@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--=============== FLATICON ===============-->
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-straight/css/uicons-regular-straight.css"
+    />
+
+
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/cpa.css">
+
+    <title>SBFC</title>
+
+
+
+<!-- Script code -->
+
+<script>
+  function fetchData() {
+      var refid = document.getElementById("refid1").value.trim();
+      if (refid) {
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", "fetch_data.php?refid=" + refid, true);
+          xhr.onload = function () {
+              if (this.status === 200) {
+                  try {
+                      var data = JSON.parse(this.responseText);
+                      if (data) {
+                          // Populate fields with fetched data
+                          document.getElementById("refid").value = data.refid || "";
+                          document.getElementById("refid").readOnly = true;
+                          document.getElementById("applicant_name").value = data.applicant_name || "";
+                          document.getElementById("applicant_name").readOnly = true;
+                          document.getElementById("zone").value = data.zone || "";
+                          document.getElementById("zone").disabled = true;
+                          document.getElementById("region").value = data.region || "";
+                          document.getElementById("region").disabled = true;
+                          document.getElementById("branch_name").value = data.branch_name || "";
+                          document.getElementById("branch_name").disabled = true;
+                          document.getElementById("leviosa_stage").value = data.leviosa_stage || "";
+                          document.getElementById("leviosa_stage").disabled = true;
+                          document.getElementById("system_loan_amount").value = data.system_loan_amount || "";
+                          document.getElementById("system_loan_amount").readOnly = true;
+                          document.getElementById("imd_utr_no").value = data.imd_utr_no || "";
+                          document.getElementById("imd_utr_no").readOnly = true;
+                          document.getElementById("imd_status").value = data.imd_status || "";
+                          document.getElementById("imd_status").disabled = true;
+                      } else {
+                          alert("No data found for the given RefID");
+                      }
+                  } catch (e) {
+                      console.error("Error parsing JSON:", e);
+                      alert("Invalid response from server");
+                  }
+              } else {
+                  alert("Error fetching data: " + this.status);
+              }
+          };
+          xhr.onerror = function () {
+              alert("Request error");
+          };
+          xhr.send();
+      } else {
+          alert("Please enter a RefID");
+      }
+  }
+
+  function clearFields() {
+      // Clear input values
+      document.getElementById("applicant_name").value = "";
+      document.getElementById("branch_name").value = "";
+      document.getElementById("system_loan_amount").value = "";
+      document.getElementById("zone").value = "";
+      document.getElementById("imd_utr_no").value = "";
+      document.getElementById("imd_status").value = "";
+      document.getElementById("region").value = "";
+      
+      // Resetting the continue button state
+      const continueBtn = document.getElementById("continueBtn");
+      continueBtn.disabled = true;
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+      const continueBtn = document.getElementById("continueBtn");
+      const formElements = document.querySelectorAll("#basic input");
+
+      formElements.forEach(element => {
+          element.addEventListener("input", toggleSubmitButton);
+      });
+
+      function toggleSubmitButton() {
+          const allFieldsFilled = Array.from(formElements).every(element => {
+              return element.value.trim() !== "";
+          });
+          continueBtn.disabled = !allFieldsFilled;
+      }
+  });
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+  </head>
+  <body>
+    <!--=============== HEADER ===============-->
+    <header class="header">
+      <nav class="nav container">
+        <a href="index.html" class="nav__logo">
+          <img
+          class="nav__logo-img"
+          src="https://www.sbfc.com/images/logo-sbfc.svg?rm=1702233000"
+          alt="website logo"
+        />
+        </a>
+        <div class="nav__menu" id="nav-menu">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <a href="home.php" class="nav__link">Home</a>
+            </li>
+            <li class="nav__item">
+              <a href="basic_cpa_detail.html" class="nav__link active-link">Basic</a>
+            </li>
+        
+            <li class="nav__item">
+              <a href="screening.html" class="nav__link">Screening</a>
+            </li>
+            <li class="nav__item">
+              <a href="valuation.html" class="nav__link">Valuation</a>
+            </li>
+            <li class="nav__item">
+              <a href="legal.html" class="nav__link">Legal</a>
+            </li>
+            <li class="nav__item">
+              <a href="assessment.html" class="nav__link">Assessment</a>
+            </li>
+          </ul>
+          <div class="header__search">
+            <input
+              type="text"
+              placeholder="Enter RefId..."
+              class="form__input"
+              id="refid1"
+            />
+            <button class="search__btn" onclick="fetchData()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+      </nav>
+    </header>
+
+
+    <div class="eleven">
+      <h1 class="h_1">Basic cpa form</h1>
+    </div>
+
+
+    
+    <form  class="form-cpa"  method="POST"  action="save_basic.php" id="basic">
+      <div class="form-row">
+          <div class="form-group">
+              <label for="refid">RefId* (17 Characters)</label>
+              <input type="text" id="refid" name="refid" maxlength="17" required>
+              <div id="refIdError" class="error"></div>
+          </div>
+          <div class="form-group">
+              <label for="applicant_name">Applicant Name*</label>
+              <input type="text" id="applicant_name" name="applicant_name" required>
+          </div>
+      </div>
+  
+      <div class="form-row">
+          <div class="form-group">
+            <label for="zone">Zone*</label>
+              <select id="zone" name="zone" required class="Fieldlist"  onchange="populateRegions()">
+                <option value="">Select Zone</option>
+                <!-- <option value="East">East</option>
+                <option value="West">West</option>
+                <option value="North">North</option>
+                <option value="South">South</option> -->
+              </select>
+              
+          </div>
+          <div class="form-group">
+            <label for="region">Region*</label>
+              <select
+                        id="region"
+                        name="region"
+                        required
+                        class="Fieldlist"
+                        onchange="populateBranches()"
+                      >
+                        <option value="">Select Region</option>
+                        <!-- Add 20 options here -->
+
+                        <!-- <option value="Bihar">Bihar</option>
+                        <option value="ROK">ROK</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Bangalore1">Bangalore1</option>
+                        <option value="UPEast">UPEast</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="TN">TN</option>
+                        <option value="AP">AP</option>
+                        <option value="ROM">ROM</option>
+                        <option value="UPWest">UPWest</option>
+                        <option value="Telangana2">Telangana2</option>
+                        <option value="Bangalore2">Bangalore2</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="PCH">PCH</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Telangana1">Telangana1</option>
+                        <option value="UPCentral">UPCentral</option>
+                        <option value="MP1">MP1</option>
+                        <option value="ROM2">ROM2</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="MP3">MP3</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Assam">Assam</option>
+                        <option value="MP2">MP2</option> -->
+                      </select>
+              
+          </div>
+      </div>
+  
+      <div class="form-row">
+          <div class="form-group">
+            <label for="branch_name">Branch Name*</label>
+            <select
+            id="branch_name"
+            name="branch_name"
+            required
+            class="Fieldlist"
+            required
+          >
+            <option value="">Select Branch Name</option>
+            <!-- Add 50 options here -->
+
+            <!-- <option value="MUZAFFARPUR">MUZAFFARPUR</option>
+            <option value="HAVERI">HAVERI</option>
+            <option value="NOIDA">NOIDA</option>
+            <option value="YELAHANKA">YELAHANKA</option>
+            <option value="PRAYAGRAJ">PRAYAGRAJ</option>
+            <option value="MIRAROAD">MIRAROAD</option>
+            <option value="THANE">THANE</option>
+            <option value="KRISHNAGIRI">KRISHNAGIRI</option>
+            <option value="ONGOLE">ONGOLE</option>
+            <option value="TIPTUR">TIPTUR</option>
+            <option value="REWARI">REWARI</option>
+            <option value="KALYAN">KALYAN</option>
+            <option value="SHIVAMOGGA">SHIVAMOGGA</option>
+            <option value="PCMC">PCMC</option>
+            <option value="ALIGARH">ALIGARH</option>
+            <option value="MAHABUBABAD">MAHABUBABAD</option>
+            <option value="KOLHAPUR">KOLHAPUR</option>
+            <option value="VIJAYANAGAR">VIJAYANAGAR</option>
+            <option value="SAHARANPUR">SAHARANPUR</option>
+            <option value="PATIALA">PATIALA</option>
+            <option value="VIJAYAWADA">VIJAYAWADA</option>
+            <option value="YAMUNANAGAR">YAMUNANAGAR</option>
+            <option value="GHAZIABAD">GHAZIABAD</option>
+            <option value="NIZAMABAD">NIZAMABAD</option>
+            <option value="PILIBHIT">PILIBHIT</option>
+            <option value="WARANGAL">WARANGAL</option>
+            <option value="SITAMARHI">SITAMARHI</option>
+            <option value="GULBARGA">GULBARGA</option>
+            <option value="DHARWAD">DHARWAD</option>
+            <option value="DARBHANGA">DARBHANGA</option>
+            <option value="DEORIA">DEORIA</option>
+            <option value="HAPUR">HAPUR</option>
+            <option value="NALGONDA">NALGONDA</option>
+            <option value="MOTIHARI">MOTIHARI</option>
+            <option value="BHAGALPUR">BHAGALPUR</option>
+            <option value="NARAYANPET">NARAYANPET</option>
+            <option value="KANPURDEHAT">KANPURDEHAT</option>
+            <option value="MADHEPURA">MADHEPURA</option>
+            <option value="SECUNDERABAD">SECUNDERABAD</option>
+            <option value="CHIKKABALLAPURA">CHIKKABALLAPURA</option>
+            <option value="VIZAG">VIZAG</option>
+            <option value="KODAD">KODAD</option>
+            <option value="MIRYALAGUDA">MIRYALAGUDA</option>
+            <option value="PEENYA">PEENYA</option>
+            <option value="MAHARANIROADINDORE">
+              MAHARANIROADINDORE
+            </option>
+            <option value="THORRUR">THORRUR</option>
+            <option value="YAVATMAL">YAVATMAL</option>
+            <option value="MODINAGAR">MODINAGAR</option>
+            <option value="VADODARA">VADODARA</option>
+            <option value="MORADABAD">MORADABAD</option>
+            <option value="BASAVANGUDI">BASAVANGUDI</option>
+            <option value="RAMAMURTHYNAGAR">RAMAMURTHYNAGAR</option>
+            <option value="SITAPUR">SITAPUR</option>
+            <option value="RAEBARELI">RAEBARELI</option>
+            <option value="KAITHAL">KAITHAL</option>
+            <option value="BELGHAM">BELGHAM</option>
+            <option value="HARDA">HARDA</option>
+            <option value="DEWAS">DEWAS</option>
+            <option value="GONDA">GONDA</option>
+            <option value="HOSAKOTE">HOSAKOTE</option>
+            <option value="SURYAPET">SURYAPET</option>
+            <option value="WASHIM">WASHIM</option>
+            <option value="PALWAL">PALWAL</option>
+            <option value="DAVANGERE">DAVANGERE</option>
+            <option value="RAJKOT">RAJKOT</option>
+            <option value="NELAMANGALA">NELAMANGALA</option>
+            <option value="ERODE">ERODE</option>
+            <option value="AGRA">AGRA</option>
+            <option value="CHANNARAYAPATNA">CHANNARAYAPATNA</option>
+            <option value="JHUNJHUNU">JHUNJHUNU</option>
+            <option value="NELLORE">NELLORE</option>
+            <option value="AMINJIKARAI">AMINJIKARAI</option>
+            <option value="MYSORE">MYSORE</option>
+            <option value="MADHUBANI">MADHUBANI</option>
+            <option value="MAHARAJGANJ">MAHARAJGANJ</option>
+            <option value="MAHABUBNAGAR">MAHABUBNAGAR</option>
+            <option value="NARNAUL">NARNAUL</option>
+            <option value="DIBAI">DIBAI</option>
+            <option value="PALANPUR">PALANPUR</option>
+            <option value="MEHSANA">MEHSANA</option>
+            <option value="TIRUVALLUR">TIRUVALLUR</option>
+            <option value="BIJNOR">BIJNOR</option>
+            <option value="SIDDIPET">SIDDIPET</option>
+            <option value="SWARGATE">SWARGATE</option>
+            <option value="SHAMLI">SHAMLI</option>
+            <option value="RAJENDRAPATH">RAJENDRAPATH</option>
+            <option value="NAGPUR">NAGPUR</option>
+            <option value="TUMKUR">TUMKUR</option>
+            <option value="BASTI">BASTI</option>
+            <option value="PURNIA">PURNIA</option>
+            <option value="MAVDI">MAVDI</option>
+            <option value="DHAMNOD">DHAMNOD</option>
+            <option value="GORAKHPUR">GORAKHPUR</option>
+            <option value="HUBLI">HUBLI</option>
+            <option value="PUDUCHERRY">PUDUCHERRY</option>
+            <option value="BEGUSARAI">BEGUSARAI</option>
+            <option value="KHAMMAM">KHAMMAM</option>
+            <option value="MANINAGAR">MANINAGAR</option>
+            <option value="MEERUT">MEERUT</option>
+            <option value="SATHUPALLI">SATHUPALLI</option>
+            <option value="ROHTAK">ROHTAK</option>
+            <option value="BALLABGARH">BALLABGARH</option>
+            <option value="PONTA">PONTA</option>
+            <option value="GUDIYATHAM">GUDIYATHAM</option>
+            <option value="GONDIA">GONDIA</option>
+            <option value="KUKATPALLY">KUKATPALLY</option>
+            <option value="CHOUTUPPAL">CHOUTUPPAL</option>
+            <option value="KATIHAR">KATIHAR</option>
+            <option value="LUDHIANA">LUDHIANA</option>
+            <option value="AJMER">AJMER</option>
+            <option value="AMRITSAR">AMRITSAR</option>
+            <option value="NAKRIKAL">NAKRIKAL</option>
+            <option value="MANCHERIAL">MANCHERIAL</option>
+            <option value="VASHI">VASHI</option>
+            <option value="HODAL">HODAL</option>
+            <option value="GOMTINAGAR">GOMTINAGAR</option>
+            <option value="AMRAVATI">AMRAVATI</option>
+            <option value="SIVASAGAR">SIVASAGAR</option>
+            <option value="VAPI">VAPI</option>
+            <option value="VIJAYNAGAR">VIJAYNAGAR</option>
+            <option value="NAGARKURNOOL">NAGARKURNOOL</option>
+            <option value="HARJINDERNAGARKANPUR">
+              HARJINDERNAGARKANPUR
+            </option>
+            <option value="KARIMNAGAR">KARIMNAGAR</option>
+            <option value="MUZAFFARNAGAR">MUZAFFARNAGAR</option>
+            <option value="REENGUS">REENGUS</option>
+            <option value="UJJAIN">UJJAIN</option>
+            <option value="GURUGRAM">GURUGRAM</option>
+            <option value="KAIKALURU">KAIKALURU</option>
+            <option value="AYODHYA">AYODHYA</option>
+            <option value="HATHRAS">HATHRAS</option>
+            <option value="DILSUKHNAGAR">DILSUKHNAGAR</option>
+            <option value="SILCHAR">SILCHAR</option>
+            <option value="GUNTUR">GUNTUR</option>
+            <option value="WARDHA">WARDHA</option>
+            <option value="ANNAPURNAROADINDORE">
+              ANNAPURNAROADINDORE
+            </option>
+            <option value="KASGANJ">KASGANJ</option>
+            <option value="MADANAPALLI">MADANAPALLI</option>
+            <option value="NAGAON">NAGAON</option>
+            <option value="SALEM">SALEM</option>
+            <option value="SHAJAPUR">SHAJAPUR</option>
+            <option value="ELURU">ELURU</option>
+            <option value="MATHURA">MATHURA</option>
+            <option value="BHILWARA">BHILWARA</option>
+            <option value="SANGLI">SANGLI</option>
+            <option value="HOSHIARPUR">HOSHIARPUR</option>
+            <option value="JODHPUR">JODHPUR</option>
+            <option value="GURUKUL">GURUKUL</option>
+            <option value="SHAHPURA">SHAHPURA</option>
+            <option value="LAJPATNAGAR">LAJPATNAGAR</option>
+            <option value="BHANDARA">BHANDARA</option>
+            <option value="ASHTA">ASHTA</option>
+            <option value="VARANASI">VARANASI</option>
+            <option value="BADWANI">BADWANI</option>
+            <option value="PANIPAT">PANIPAT</option>
+            <option value="KAKINADA">KAKINADA</option>
+            <option value="MADIPAKKAM">MADIPAKKAM</option>
+            <option value="GUWAHATI">GUWAHATI</option>
+            <option value="BULANDSAHAR">BULANDSAHAR</option>
+            <option value="JALANDHAR">JALANDHAR</option>
+            <option value="JANGAON">JANGAON</option>
+            <option value="HISAR">HISAR</option>
+            <option value="KHARGONE">KHARGONE</option>
+            <option value="DHAR">DHAR</option>
+            <option value="DEHRADUN">DEHRADUN</option>
+            <option value="HARIDWAR">HARIDWAR</option>
+            <option value="MIRZAPUR">MIRZAPUR</option>
+            <option value="RUDRAPUR">RUDRAPUR</option>
+            <option value="BIDADI">BIDADI</option>
+            <option value="TEZPUR">TEZPUR</option>
+            <option value="NAIDUPET">NAIDUPET</option>
+            <option value="SANGAREDDY">SANGAREDDY</option>
+            <option value="AJMERROADSODALA">AJMERROADSODALA</option>
+            <option value="TUNI">TUNI</option>
+            <option value="DHARMAPURI">DHARMAPURI</option>
+            <option value="AZAMGARH">AZAMGARH</option>
+            <option value="PRATAPGARH">PRATAPGARH</option>
+            <option value="SAMASTIPUR">SAMASTIPUR</option>
+            <option value="AKOLA">AKOLA</option>
+            <option value="FARIDABAD">FARIDABAD</option>
+            <option value="BAREILLY">BAREILLY</option>
+            <option value="RAJAHMUNDRY">RAJAHMUNDRY</option>
+            <option value="PITHAMPUR">PITHAMPUR</option>
+            <option value="PANRUTI">PANRUTI</option>
+            <option value="KHANDWA">KHANDWA</option>
+            <option value="BARAMATI">BARAMATI</option>
+            <option value="KURUKSHETRA">KURUKSHETRA</option>
+            <option value="BORIVALI">BORIVALI</option>
+            <option value="TIRUPATI">TIRUPATI</option>
+            <option value="VIJAYNAGAR-INDORE">
+              VIJAYNAGAR-INDORE
+            </option>
+            <option value="HOSUR">HOSUR</option>
+            <option value="PANCHKULA">PANCHKULA</option>
+            <option value="KHAMGAON">KHAMGAON</option>
+            <option value="MANDSAUR">MANDSAUR</option>
+            <option value="SONIPAT">SONIPAT</option>
+            <option value="KURNOOL">KURNOOL</option>
+            <option value="HARDOI">HARDOI</option>
+            <option value="BHIWANI">BHIWANI</option>
+            <option value="ANAND">ANAND</option>
+            <option value="HALDWANI">HALDWANI</option>
+            <option value="NEEMUCH">NEEMUCH</option>
+            <option value="KOLAR">KOLAR</option>
+            <option value="SIKAR">SIKAR</option>
+            <option value="AMBALA">AMBALA</option>
+            <option value="RAZAM">RAZAM</option>
+            <option value="VELLORE">VELLORE</option>
+            <option value="VISSANNAPETA">VISSANNAPETA</option>
+            <option value="BHIMAVARAM">BHIMAVARAM</option>
+            <option value="SIKANDRABAD">SIKANDRABAD</option>
+            <option value="BONGAIGAON">BONGAIGAON</option>
+            <option value="VIRAR">VIRAR</option>
+            <option value="RATLAM">RATLAM</option>
+            <option value="HAJIPUR">HAJIPUR</option>
+            <option value="HANAMKONDA">HANAMKONDA</option>
+            <option value="TOHANA">TOHANA</option>
+            <option value="CHANDANAGAR">CHANDANAGAR</option>
+            <option value="DEFAULT">DEFAULT</option>
+            <option value="MORBI">MORBI</option>
+            <option value="BALLIA">BALLIA</option>
+            <option value="BARDOLI">BARDOLI</option>
+            <option value="CHANDIGARH">CHANDIGARH</option>
+            <option value="BIHTA">BIHTA</option>
+            <option value="NASHIK">NASHIK</option>
+            <option value="TANUKU">TANUKU</option>
+            <option value="SHADNAGAR">SHADNAGAR</option>
+            <option value="JAUNPUR">JAUNPUR</option>
+            <option value="UDAIPUR">UDAIPUR</option> -->
+
+            <!-- ... more options ... -->
+          </select>
+          </div>
+          <div class="form-group">
+              <label for="leviosa_stage">Leviosa Stage*</label>
+              <select
+                        id="leviosa_stage"
+                        name="leviosa_stage"
+                        required
+                        class="Fieldlist"
+                      >
+                        <option value="">Select Leviosa Stage</option>
+                        <option value="DE">DE</option>
+                        <option value="DEE">DEE</option>
+                      </select>
+          </div>
+      </div>
+  
+      <div class="form-row">
+          <div class="form-group">
+              <label for="system_loan_amount">System Loan Amount*</label>
+              <input type="number" id="system_loan_amount" name="system_loan_amount" required>
+          </div>
+          <div class="form-group">
+              <label for="imd_utr_no">IMD UTR No.*</label>
+              <input type="text" id="imd_utr_no" name="imd_utr_no" required>
+          </div>
+      </div>
+  
+      <div class="form-row">
+          <div class="form-group">
+              <label for="imd_status">IMD Status*</label>
+              <select
+                        id="imd_status"
+                        name="imd_status"
+                        required
+                        class="Fieldlist"
+                      >
+                        <option value="">Select IMD Status</option>
+                        <option value="System Clear">System Clear</option>
+                        <option value="Screenshot received">
+                          Screenshot received
+                        </option>
+                        <option value="Waive">Waive</option>
+                        <option value="Approval">Approval</option>
+                      </select>
+          </div>
+      </div>
+  
+      <button type="submit" id="continueBtn" disabled class="cpa-next">Continue</button>
+  </form>
+
+
+
+
+    
+
+    <!--=============== FOOTER ===============-->
+    <footer class="footer container">
+      <div class="footer__container grid">
+        <div class="footer__content">
+          <a href="index.html" class="footer__logo">
+            <img src="./assets/img/logo.svg" alt="" class="footer__logo-img" />
+          </a>
+          <h4 class="footer__subtitle">Contact</h4>
+          <p class="footer__description">
+            <span>Address:</span> SBFC Finance Limited
+            (Erstwhile SBFC Finance Private Limited),
+            103, First Floor, C & B Square,
+            Sangam Complex,
+            Andheri Kurla Road,
+            Chakala, Andheri East,
+            Mumbai – 400059,
+            Maharashtra, India
+            CIN: U67190MH2008PLC178270
+          </p>
+          <p class="footer__description">
+            <span>Phone:</span>022-6831-3333
+          </p>
+          <p class="footer__description">
+            <span>Hours:</span> 24hrs, Mon - Sun
+          </p>
+          
+        </div>
+        <div class="footer__content">
+          <h3 class="footer__title">Address</h3>
+          <ul class="footer__links">
+            <li><a href="#" class="footer__link">About Us</a></li>
+           
+            <li><a href="#" class="footer__link">Privacy Policy</a></li>
+            <li><a href="#" class="footer__link">Terms & Conditions</a></li>
+            <li><a href="#" class="footer__link">Contact Us</a></li>
+            <li><a href="#" class="footer__link">Support Center</a></li>
+          </ul>
+        </div>
+        <div class="footer__content">
+          <h3 class="footer__title">My Account</h3>
+          <ul class="footer__links">
+            <li><a href="#" class="footer__link">Terms of Use</a></li>
+            <li><a href="#" class="footer__link">Privacy Policy</a></li>
+            <li><a href="#" class="footer__link">Fair Practice Code</a></li>
+            <li><a href="#" class="footer__link">List of KYC Documents</a></li>
+            <li><a href="#" class="footer__link">Payment Modes</a></li>
+            <li><a href="#" class="footer__link">FAQs and policies</a></li>
+          </ul>
+        </div>
+        <div class="footer__content">
+          <img src="https://www.sbfc.com/cmsproject/mediaGallery/images/qr-1658326497.png?rm=1702233000" alt="">
+
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="copyright">&copy; 2024 SBFC. All right reserved</p>
+       
+      </div>
+    </footer>
+
+
+    <script>
+      // Data structured with zones, regions, and branches
+      const data = {
+          "South": {
+              "Telangana 1": ["NALGONDA", "MAHABUBNAGAR", "SECUNDERABAD", "NARAYANPET", "SANGAREDDY", "KUKATPALLY", "DILSUKHNAGAR", "CHANDA NAGAR"],
+              "Telangana 2": ["MAHABUBABAD", "KHAMMAM", "WARANGAL", "SIDDIPET", "NALGONDA", "SATHUPALLI", "KARIMNAGAR", "KODAD"],
+              "AP": ["ONGOLE", "VIJAYAWADA", "GUNTUR", "KAKINADA", "RAJAHMUNDRY", "TIRUPATI", "MADANAPALLI", "NAIDU PET"],
+              "ROK": ["DHARWAD", "HUBLI", "SHIVAMOGGA", "HAVERI", "BELGHAM", "GULBARGA"],
+              "TN": ["SALEM", "PUDUCHERRY", "GUDIYATHAM", "VELLORE", "TIRUVALLUR", "ERODE", "MADIPAKKAM", "DHARMAPURI"],
+              "Bangalore 1": ["YELAHANKA", "TUMKUR", "NELAMANGALA", "CHIKKABALLAPURA", "BASAVANGUDI", "PEENYA"],
+              "Bangalore 2": ["MYSORE", "RAMAMURTHY NAGAR", "VIJAYANAGAR", "BIDADI", "HOSUR", "HOSAKOTE"]
+          },
+          "North": {
+              "UP East": ["VARANASI", "GORAKHPUR", "PRAYAGRAJ", "DEORIA", "JAUNPUR", "BASTI", "MIRZAPUR", "AZAMGARH"],
+              "UP West": ["MATHURA", "ALIGARH", "AGRA", "HALDWANI", "MORADABAD", "PILIBHIT", "BIJNOR"],
+              "UP Central": ["HARDOI", "GONDA", "RAEBARELI", "KANPUR", "SITAPUR", "AYODHYA"],
+              "Rajasthan": ["JODHPUR", "AJMER", "UDAIPUR", "REENGUS", "JHUNJHUNU", "SHAHPURA", "BHILWARA"],
+              "Haryana": ["KAITHAL", "KURUKSHETRA", "HISAR", "PANIPAT", "SONIPAT", "TOHANA"],
+              "Delhi": ["GHAZIABAD", "NOIDA", "MEERUT", "GURUGRAM", "PALWAL", "FARIDABAD"]
+          },
+          "West": {
+              "Gujarat": ["VADODARA", "RAJKOT", "ANAND", "JAMNAGAR", "MEHSANA", "PALANPUR", "MORBI", "BARDOLI"],
+              "ROM": ["SANGLI", "NASHIK", "BARAMATI", "SWARGATE", "CHANDAN NAGAR", "PCMC", "KOLHAPUR"],
+              "ROM 2": ["NAGPUR", "AMRAVATI", "WARDHA", "YAVATMAL", "KHAMGAON", "AKOLA", "BHANDARA"],
+              "MP 1": ["ASHTA", "ANNAPURNA ROAD INDORE", "DHAR", "DHAMNOD", "SHAJAPUR", "PITHAMPUR"],
+              "MP 2": ["MANDSAUR", "NEEMUCH", "RATLAM", "UJJAIN"],
+              "MP 3": ["KHARGONE", "HARDA", "BADWANI", "KHANDWA"]
+          },
+          "East": {
+              "Bihar": ["KATIHAR", "BEGUSARAI", "SAMASTIPUR", "DARBHANGA", "MUZAFFARPUR", "MADHEPURA", "PURNIA"],
+              "Assam": ["NAGAON", "SIVASAGAR", "GUWAHATI", "TEZPUR", "TINSUKIA"]
+          }
+      };
+
+      // Function to populate the Regions based on the selected Zone
+      function populateRegions() {
+          const zoneDropdown = document.getElementById("zone");
+          const regionDropdown = document.getElementById("region");
+          const branchDropdown = document.getElementById("branch_name");
+
+          const selectedZone = zoneDropdown.value;
+
+          // Clear current options in Region and Branch dropdowns
+          regionDropdown.innerHTML = '<option value="">Select Region</option>';
+          branchDropdown.innerHTML = '<option value="">Select Branch</option>';
+
+          if (selectedZone && data[selectedZone]) {
+              // Populate Region dropdown based on selected Zone
+              const regions = Object.keys(data[selectedZone]);
+              regions.forEach(region => {
+                  const option = document.createElement("option");
+                  option.value = region;
+                  option.text = region;
+                  regionDropdown.appendChild(option);
+              });
+          }
+      }
+
+      // Function to populate the Branches based on the selected Region
+      function populateBranches() {
+          const zoneDropdown = document.getElementById("zone");
+          const regionDropdown = document.getElementById("region");
+          const branchDropdown = document.getElementById("branch_name");
+
+          const selectedZone = zoneDropdown.value;
+          const selectedRegion = regionDropdown.value;
+
+          // Clear current options in Branch dropdown
+          branchDropdown.innerHTML = '<option value="">Select Branch</option>';
+
+          if (selectedZone && selectedRegion && data[selectedZone][selectedRegion]) {
+              // Populate Branch dropdown based on selected Region
+              const branches = data[selectedZone][selectedRegion];
+              branches.forEach(branch => {
+                  const option = document.createElement("option");
+                  option.value = branch;
+                  option.text = branch;
+                  branchDropdown.appendChild(option);
+              });
+          }
+      }
+
+      // Function to populate Zones on page load
+      function populateZones() {
+          const zoneDropdown = document.getElementById("zone");
+          const zones = Object.keys(data);
+
+          zones.forEach(zone => {
+              const option = document.createElement("option");
+              option.value = zone;
+              option.text = zone;
+              zoneDropdown.appendChild(option);
+          });
+      }
+
+      // Populate zones when the page loads
+      window.onload = populateZones;
+  </script>
+
+
+   
+
+  </body>
+</html>
